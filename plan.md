@@ -128,7 +128,7 @@ client_id = settings.GOOGLE_CLIENT_ID
 
 #### Team Consult: 상담 기능 (Thin Slice 방식 🎯)
 
-- [ ] `HAIS-11` [Consult] 상담 세션 생성 **🔐 인증 필수**
+- [x] `HAIS-11` [Consult] 상담 세션 생성 **🔐 인증 필수**
   - **📖 유저 스토리**: "로그인한 사용자로서, 상담 세션을 시작하고 싶다"
   - **Domain**: `ConsultSession` (id, user_id, profile, created_at)
   - **Repository**: `ConsultRepositoryPort` + In-Memory 구현

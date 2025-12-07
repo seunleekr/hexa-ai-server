@@ -1,0 +1,56 @@
+from fastapi import APIRouter, HTTPException, Depends, status
+
+from app.consult.application.use_case.start_consult_use_case import StartConsultUseCase
+from app.user.application.port.user_repository_port import UserRepositoryPort
+from app.consult.application.port.consult_repository_port import ConsultRepositoryPort
+from app.auth.adapter.input.web.auth_dependency import get_current_user_id
+
+consult_router = APIRouter()
+
+# Global repository instances (will be injected in tests)
+_user_repository: UserRepositoryPort | None = None
+_consult_repository: ConsultRepositoryPort | None = None
+
+
+@consult_router.post("/start")
+def start_consult(user_id: str = Depends(get_current_user_id)):
+    """
+    상담 세션을 시작한다.
+
+    1. user_id로 User 조회
+    2. User의 MBTI, Gender 확인
+    3. StartConsultUseCase 실행
+    4. 세션 ID 반환
+    """
+    # User 조회
+    if not _user_repository:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="User repository가 설정되지 않았습니다",
+        )
+
+    user = _user_repository.find_by_id(user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="사용자를 찾을 수 없습니다",
+        )
+
+    # MBTI, Gender 확인
+    if not user.mbti or not user.gender:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="프로필 정보(MBTI, 성별)를 먼저 입력해주세요",
+        )
+
+    # Use case 실행
+    if not _consult_repository:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Consult repository가 설정되지 않았습니다",
+        )
+
+    use_case = StartConsultUseCase(_consult_repository)
+    result = use_case.execute(user_id=user_id, mbti=user.mbti, gender=user.gender)
+
+    return result
