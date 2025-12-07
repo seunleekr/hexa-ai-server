@@ -7,7 +7,7 @@ from app.data.adapter.input.web.request.create_data_request import (
     CrawlingIngestRequest,
 )
 from app.data.adapter.input.web.response.data_response import DataResponse
-from config.database.session import get_db
+from config.database import get_db
 
 data_router = APIRouter()
 

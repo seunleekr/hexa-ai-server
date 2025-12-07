@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from datetime import datetime
 
-from config.database.session import Base
+from config.database import Base
 
 
 class DataORM(Base):

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.router import setup_routers
-from config.database.session import engine, Base
+from config.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 
 
