@@ -135,6 +135,19 @@ client_id = settings.GOOGLE_CLIENT_ID
   - **API**: `POST /consult/start` (Header: Authorization) → `{"session_id": "uuid"}`
   - **✅ 인수 조건**: UUID 세션 생성, user_id 연결, 세션 검증, 프로필 저장, curl 테스트 가능
 
+- [x] `HAIS-11-DB` [Consult] 상담 세션 DB 마이그레이션 **[STRUCTURAL]**
+  - **📖 목적**: In-Memory 구현체를 실제 DB로 교체 (영속성 확보)
+  - **작업 내용**:
+    - `ConsultRepositoryPort` 구현체를 In-Memory → DB(PostgreSQL/MySQL/기타)로 교체
+    - DB 테이블 스키마 설계 및 마이그레이션 스크립트 작성
+    - 기존 테스트는 **모두 통과**해야 함 (동작 변경 없음)
+    - 테스트용 Fake Repository는 유지 (통합 테스트에서 활용)
+  - **✅ 인수 조건**:
+    - 모든 기존 API 테스트 통과
+    - 세션 재시작 후에도 데이터 유지 (영속성 검증)
+    - DB 연결 실패 시 적절한 에러 핸들링
+  - **⚠️ 주의**: 이 작업은 Structural Change이므로 별도 커밋으로 분리
+
 - [ ] `HAIS-12` [Consult] AI 인사 메시지 추가
   - **📖 유저 스토리**: "사용자로서, 세션을 시작하면 내 MBTI에 맞는 AI 인사말을 받고 싶다"
   - **Port**: `AICounselorPort` 인터페이스 정의 (generate_greeting 메서드)
