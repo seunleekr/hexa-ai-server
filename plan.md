@@ -203,7 +203,7 @@ client_id = settings.GOOGLE_CLIENT_ID
   - **API**: `POST /converter/convert` → 1가지 톤 반환
   - **✅ 인수 조건**: 톤 변환 작동, 해설 포함
 
-- [ ] `HAIS-18` [Converter] 3가지 톤 동시 생성
+- [x] `HAIS-18` [Converter] 3가지 톤 동시 생성 ✅
   - **📖 유저 스토리**: "사용자로서, 공손/캐주얼/간결 3가지 버전을 한 번에 받고 싶다"
   - **UseCase**: `ConvertMessageUseCase` - 3가지 톤 병렬 생성
   - **API 확장**: 응답에 3가지 톤 배열
